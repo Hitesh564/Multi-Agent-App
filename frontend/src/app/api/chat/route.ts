@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: data.detail || 'Backend error' }, { status: res.status });
     }
     return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to proxy request to backend' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ 
+      error: `Failed to proxy request to backend. URL used: ${API_BASE}. Exact error: ${error.message}` 
+    }, { status: 500 });
   }
 }

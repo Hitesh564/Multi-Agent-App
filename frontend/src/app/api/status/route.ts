@@ -7,7 +7,9 @@ export async function GET() {
     const res = await fetch(`${API_BASE}/api/status`);
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch status' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ 
+      error: `Failed to proxy request to backend. URL used: ${API_BASE}. Exact error: ${error.message}` 
+    }, { status: 500 });
   }
 }
