@@ -1,3 +1,16 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Explicitly pull CPU versions of PyTorch to avoid the 6GB CUDA image size on Railway
+torch
+torchvision
+
+# Backend Framework
+fastapi
+uvicorn
+python-multipart
+supabase
+
+# Core AI and Data Libraries
 streamlit>=1.31.0
 groq>=0.4.2
 sentence-transformers>=2.5.1
