@@ -1,0 +1,22 @@
+import { NextResponse } from 'next/server';
+
+const API_BASE = 'http://127.0.0.1:8000';
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    
+    const data = await res.json();
+    if (!res.ok) {
+      return NextResponse.json({ error: data.detail || 'Backend error' }, { status: res.status });
+    }
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to proxy request to backend' }, { status: 500 });
+  }
+}
