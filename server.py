@@ -85,11 +85,12 @@ async def chat(req: ChatRequest):
     save_message(session_id, "user", prompt)
     
     # Build memory context
-    recall = system["memory_service"].retrieve(prompt, top_k=3)
+    # DISABLED: recall = system["memory_service"].retrieve(prompt, top_k=3)
+    recall = []
     memory_context = ""
-    if recall:
-        context_lines = [f"- {text}" for text, _score in recall]
-        memory_context = "Memory Context:\n" + "\n".join(context_lines) + "\n\n"
+    # DISABLED: if recall:
+    #     context_lines = [f"- {text}" for text, _score in recall]
+    #     memory_context = "Memory Context:\n" + "\n".join(context_lines) + "\n\n"
         
     last_route = "GENERAL"
     
@@ -114,7 +115,7 @@ async def chat(req: ChatRequest):
         save_message(session_id, "assistant", final_response)
         
         # Auto-extract memory
-        system["memory_service"].extract_and_save_memory(prompt, raw_response)
+        # DISABLED: system["memory_service"].extract_and_save_memory(prompt, raw_response)
         
         return ChatResponse(
             role="assistant",
@@ -168,16 +169,15 @@ async def clear_documents():
 
 @app.get("/api/memory")
 async def get_memory():
-    return {"items": system["memory_service"].memory_items}
+    # DISABLED: return {"items": system["memory_service"].memory_items}
+    return {"items": []}
 
 @app.post("/api/memory/add")
 async def add_memory(req: MemoryItemRequest):
-    if req.text.strip():
-        system["memory_service"].remember(req.text)
-        return {"success": True}
-    raise HTTPException(status_code=400, detail="Empty note")
+    # DISABLED global memory addition
+    return {"success": True}
 
 @app.post("/api/memory/clear")
 async def clear_memory():
-    system["memory_service"].clear()
-    return {"success": True, "message": "Memory cleared."}
+    # DISABLED global memory clearing
+    return {"success": True, "message": "Memory cleared locally for current user."}
